@@ -13,7 +13,6 @@ function App() {
 			try {
 				setLoading(true);
 				const response = await axios.get(
-					// "https://pixabay.com/api/?q=cat&page=1&key=25848819-9cdff21383665c4a2b048e17c&image_type=photo&orientation=horizontal&per_page=12"
 					"https://api.unsplash.com/search/photos?client_id=s2k9HBCjFN_CIHBti7abhULlrT7141iyaWVylsXTv34&page=1&query=cat"
 				);
 				console.log("response", response.data.results);
@@ -29,9 +28,14 @@ function App() {
 		fetchImages();
 	}, []);
 
+	const handleSearch = () => {
+		// setImages();
+		console.log("пошук");
+	};
+
 	return (
 		<>
-			<SearchBar />
+			<SearchBar onSearsh={handleSearch} />
 			{loading && <p>Loading data, please wait...</p>}
 			{error && (
 				<p>Whoops, something went wrong! Please try reloading this page!</p>

@@ -1,11 +1,25 @@
+import { useState } from "react";
 import css from "./SearchBar.module.css";
 
-const SearchBar = () => {
+const SearchBar = ({ onSearsh }) => {
+	const [value, setValue] = useState("");
+
+	const handleSubmit = event => {
+		event.preventDefault();
+		onSearsh(value);
+		setValue("");
+	};
+
+	const handleChange = event => {
+		setValue(event.target.value);
+	};
+
 	return (
 		<header className={css.Searchbar}>
-			<form className={css.SearchForm}>
+			<form onSubmit={handleSubmit} className={css.SearchForm}>
 				<input
 					className={css.SearchFormInput}
+					onChange={handleChange}
 					type="text"
 					autoComplete="off"
 					autoFocus
