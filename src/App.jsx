@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { Toaster } from "react-hot-toast";
 import SearchBar from "./components/SearchBar/SearchBar";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
 import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
@@ -12,6 +13,7 @@ function App() {
 	const [searchText, setSearchText] = useState("");
 	const [isShowModal, setIsShowModal] = useState(false);
 	const [regularImage, setRegularImage] = useState("");
+	const [cardInfo, setcardInfo] = useState({});
 
 	useEffect(() => {
 		async function fetchImages() {
@@ -43,13 +45,18 @@ function App() {
 		setIsShowModal(prev => !prev);
 	};
 
-	const onRegularImage = () => {
-		setRegularImage(regularImage);
+	const onRegularImage = bigImage => {
+		setRegularImage(bigImage);
+	};
+
+	const onCardInfo = data => {
+		setcardInfo(data);
 	};
 
 	return (
 		<>
 			<SearchBar onSearsh={handleSearch} />
+			<Toaster position="top-center" reverseOrder={false} />
 			{loading && <p>Loading data, please wait...</p>}
 			{error && (
 				<p>Whoops, something went wrong! Please try reloading this page!</p>
@@ -59,11 +66,16 @@ function App() {
 					images={images}
 					openModal={toggleModal}
 					showRegularImage={onRegularImage}
+					onCardInfo={onCardInfo}
 				/>
 			)}
 			<LoadMoreBtn />
 			{isShowModal && (
-				<ImageModal hideModal={toggleModal} regularImage={regularImage} />
+				<ImageModal
+					hideModal={toggleModal}
+					regularImage={regularImage}
+					info={cardInfo}
+				/>
 			)}
 		</>
 	);

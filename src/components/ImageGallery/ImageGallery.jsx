@@ -1,7 +1,7 @@
 import ImageCard from "../ImageCard/ImageCard";
 import css from "./ImageGallery.module.css";
 
-const ImageGallery = ({ images, openModal, showRegularImage }) => {
+const ImageGallery = ({ images, openModal, showRegularImage, onCardInfo }) => {
 	return (
 		<ul className={css.ImageGallery}>
 			{images.map(image => (
@@ -10,7 +10,7 @@ const ImageGallery = ({ images, openModal, showRegularImage }) => {
 						images={image}
 						openModal={openModal}
 						showRegularImage={showRegularImage}
-						// showRegularImage={image.urls.regular}
+						onCardInfo={onCardInfo}
 					/>
 				</li>
 			))}

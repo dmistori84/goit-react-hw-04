@@ -1,6 +1,6 @@
 import css from "./ImageCard.module.css";
 
-const ImageCard = ({ images, openModal, showRegularImage, regularImage }) => {
+const ImageCard = ({ images, openModal, showRegularImage, onCardInfo }) => {
 	return (
 		<div className={css.ImageGalleryItem}>
 			<img
@@ -9,8 +9,11 @@ const ImageCard = ({ images, openModal, showRegularImage, regularImage }) => {
 				alt={images.tags}
 				onClick={() => {
 					openModal();
-					console.log("images.urls.regular", images.urls.regular);
 					showRegularImage(images.urls.regular);
+					onCardInfo({
+						description: images.alt_description,
+						likes: images.likes,
+					});
 				}}
 			/>
 		</div>
