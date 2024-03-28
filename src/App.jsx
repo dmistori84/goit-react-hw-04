@@ -63,13 +63,13 @@ function App() {
 			<SearchBar onSearsh={handleSearch} />
 			<Toaster position="top-center" reverseOrder={false} />
 			<ErrorMessage error={error} />
+			{loading && <Loader />}
 			<ImageGallery
 				images={images}
 				openModal={toggleModal}
 				showRegularImage={onRegularImage}
 				onCardInfo={onCardInfo}
 			/>
-			{loading && <Loader />}
 			{images && <LoadMoreBtn onClick={incPage} />}
 			{isShowModal && (
 				<ImageModal
