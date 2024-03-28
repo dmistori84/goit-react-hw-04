@@ -16,14 +16,14 @@ const ImageModal = ({ hideModal, regularImage, info }) => {
 	}, [hideModal]);
 
 	return (
-		<div className={css.Overlay}>
+		<div className={css.overlay}>
 			<div className={css.imageBox}>
 				<div className={css.descriptionBox}>
 					<p>Description: {info.description}</p>
 					<p>Likes: {info.likes}👍🏼</p>
 				</div>
 
-				<img className={css.Modal} src={regularImage} alt={info.description} />
+				<img className={css.modal} src={regularImage} alt={info.description} />
 			</div>
 			{/* <Modal
 				isOpen={hideModal}

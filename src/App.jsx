@@ -69,8 +69,8 @@ function App() {
 				showRegularImage={onRegularImage}
 				onCardInfo={onCardInfo}
 			/>
-			{images && <LoadMoreBtn onClick={incPage} />}
 			{loading && <Loader />}
+			{images && <LoadMoreBtn onClick={incPage} />}
 			{isShowModal && (
 				<ImageModal
 					hideModal={toggleModal}
