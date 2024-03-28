@@ -7,7 +7,7 @@ const ImageModal = ({ hideModal, regularImage, info }) => {
 		const handleEsc = event => {
 			if (event.code === "Escape" || event.currentTarget === event.target)
 				hideModal();
-			console.log(event.target);
+			// console.log(event.target);
 		};
 		document.addEventListener("keydown", handleEsc);
 		return () => {

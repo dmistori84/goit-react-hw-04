@@ -1,8 +1,11 @@
 import axios from "axios";
 
-export const requestImages = async searchText => {
+const baseURL = "https://api.unsplash.com";
+const ACCESS_KEY = "s2k9HBCjFN_CIHBti7abhULlrT7141iyaWVylsXTv34";
+
+export const requestImages = async (searchText, page = 1) => {
 	const { data } = await axios.get(
-		`https://api.unsplash.com/search/photos?client_id=s2k9HBCjFN_CIHBti7abhULlrT7141iyaWVylsXTv34&page=1&query=${searchText}`
+		`${baseURL}/search/photos?client_id=${ACCESS_KEY}&page=${page}&query=${searchText}`
 	);
 	return data;
 };

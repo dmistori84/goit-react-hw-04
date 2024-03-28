@@ -7,6 +7,7 @@ import ImageModal from "./components/ImageModal/ImageModal";
 import Loader from "./components/Loader/Loader";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 import { requestImages } from "./services/api";
+import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
 
 function App() {
 	const [images, setImages] = useState(null);
@@ -16,12 +17,14 @@ function App() {
 	const [isShowModal, setIsShowModal] = useState(false);
 	const [regularImage, setRegularImage] = useState("");
 	const [cardInfo, setcardInfo] = useState({});
+	const [page, setPage] = useState(1);
 
 	useEffect(() => {
+		if (searchText.length === 0) return;
 		async function fetchImages() {
 			try {
 				setLoading(true);
-				const response = await requestImages(searchText);
+				const response = await requestImages(searchText, page);
 				setImages(response.results);
 				// console.log("response.data.results", response.data.results);
 			} catch (error) {
@@ -32,10 +35,11 @@ function App() {
 			}
 		}
 		fetchImages();
-	}, [searchText]);
+	}, [searchText, page]);
 
 	const handleSearch = data => {
 		setSearchText(data);
+		setPage(1);
 	};
 
 	const toggleModal = () => {
@@ -50,6 +54,10 @@ function App() {
 		setcardInfo(data);
 	};
 
+	const incPage = () => {
+		setPage(prev => prev + 1);
+	};
+
 	return (
 		<>
 			<SearchBar onSearsh={handleSearch} />
@@ -61,6 +69,7 @@ function App() {
 				showRegularImage={onRegularImage}
 				onCardInfo={onCardInfo}
 			/>
+			{images && <LoadMoreBtn onClick={incPage} />}
 			{loading && <Loader />}
 			{isShowModal && (
 				<ImageModal
