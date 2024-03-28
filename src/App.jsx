@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { Toaster } from "react-hot-toast";
 import SearchBar from "./components/SearchBar/SearchBar";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
-import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
+// import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
 import ImageModal from "./components/ImageModal/ImageModal";
+import Loader from "./components/Loader/Loader";
+import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
+import { requestImages } from "./services/api";
 
 function App() {
-	const [images, setImages] = useState([]);
+	const [images, setImages] = useState(null);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(false);
 	const [searchText, setSearchText] = useState("");
@@ -19,12 +21,9 @@ function App() {
 		async function fetchImages() {
 			try {
 				setLoading(true);
-				const response = await axios.get(
-					`https://api.unsplash.com/search/photos?client_id=s2k9HBCjFN_CIHBti7abhULlrT7141iyaWVylsXTv34&page=1&query=${searchText}`
-				);
-				console.log("response", response.data.results);
-				setImages(response.data.results);
-				console.log("response.data.results", response.data.results);
+				const response = await requestImages(searchText);
+				setImages(response.results);
+				// console.log("response.data.results", response.data.results);
 			} catch (error) {
 				// Встановлюємо стан error в true
 				setError(true);
@@ -36,9 +35,7 @@ function App() {
 	}, [searchText]);
 
 	const handleSearch = data => {
-		// setImages(data);
 		setSearchText(data);
-		console.log("пошук");
 	};
 
 	const toggleModal = () => {
@@ -57,19 +54,14 @@ function App() {
 		<>
 			<SearchBar onSearsh={handleSearch} />
 			<Toaster position="top-center" reverseOrder={false} />
-			{loading && <p>Loading data, please wait...</p>}
-			{error && (
-				<p>Whoops, something went wrong! Please try reloading this page!</p>
-			)}
-			{images.length > 0 && (
-				<ImageGallery
-					images={images}
-					openModal={toggleModal}
-					showRegularImage={onRegularImage}
-					onCardInfo={onCardInfo}
-				/>
-			)}
-			<LoadMoreBtn />
+			<ErrorMessage error={error} />
+			<ImageGallery
+				images={images}
+				openModal={toggleModal}
+				showRegularImage={onRegularImage}
+				onCardInfo={onCardInfo}
+			/>
+			{loading && <Loader />}
 			{isShowModal && (
 				<ImageModal
 					hideModal={toggleModal}

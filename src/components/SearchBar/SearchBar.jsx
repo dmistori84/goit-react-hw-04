@@ -9,7 +9,7 @@ const SearchBar = ({ onSearsh }) => {
 		event.preventDefault();
 		if (!value.trim()) return toast.error("Enter your request");
 		onSearsh(value);
-		setValue("");
+		// setValue("");
 	};
 
 	const handleChange = event => {
