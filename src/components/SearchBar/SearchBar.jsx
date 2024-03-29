@@ -2,13 +2,13 @@ import toast from "react-hot-toast";
 import { useState } from "react";
 import css from "./SearchBar.module.css";
 
-const SearchBar = ({ onSearsh }) => {
+const SearchBar = ({ onSearch }) => {
 	const [value, setValue] = useState("");
 
 	const handleSubmit = event => {
 		event.preventDefault();
 		if (!value.trim()) return toast.error("Enter your request");
-		onSearsh(value);
+		onSearch(value);
 		// setValue("");
 	};
 

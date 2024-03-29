@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import { Toaster } from "react-hot-toast";
+
 import SearchBar from "./components/SearchBar/SearchBar";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
-// import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
 import ImageModal from "./components/ImageModal/ImageModal";
 import Loader from "./components/Loader/Loader";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
-import { requestImages } from "./services/api";
 import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
+
+import { requestImages } from "./services/api";
 
 function App() {
 	const [images, setImages] = useState(null);
@@ -25,10 +26,10 @@ function App() {
 			try {
 				setLoading(true);
 				const response = await requestImages(searchText, page);
-				setImages(response.results);
-				// console.log("response.data.results", response.data.results);
+				setImages(prev =>
+					prev ? [...prev, ...response.results] : response.results
+				);
 			} catch (error) {
-				// Встановлюємо стан error в true
 				setError(true);
 			} finally {
 				setLoading(false);
@@ -38,6 +39,7 @@ function App() {
 	}, [searchText, page]);
 
 	const handleSearch = data => {
+		setImages([]);
 		setSearchText(data);
 		setPage(1);
 	};
@@ -60,9 +62,9 @@ function App() {
 
 	return (
 		<>
-			<SearchBar onSearsh={handleSearch} />
+			<SearchBar onSearch={handleSearch} />
 			<Toaster position="top-center" reverseOrder={false} />
-			<ErrorMessage error={error} />
+			{error && <ErrorMessage error={error} />}
 			{loading && <Loader />}
 			<ImageGallery
 				images={images}
@@ -73,9 +75,10 @@ function App() {
 			{images && <LoadMoreBtn onClick={incPage} />}
 			{isShowModal && (
 				<ImageModal
-					hideModal={toggleModal}
 					regularImage={regularImage}
 					info={cardInfo}
+					isOpen={isShowModal}
+					onClose={toggleModal}
 				/>
 			)}
 		</>

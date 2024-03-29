@@ -1,39 +1,26 @@
-import { useEffect } from "react";
-// import { Modal } from "react-modal";
+import Modal from "react-modal";
 import css from "./ImageModal.module.css";
 
-const ImageModal = ({ hideModal, regularImage, info }) => {
-	useEffect(() => {
-		const handleEsc = event => {
-			if (event.code === "Escape" || event.currentTarget === event.target)
-				hideModal();
-			// console.log(event.target);
-		};
-		document.addEventListener("keydown", handleEsc);
-		return () => {
-			document.removeEventListener("keydown", handleEsc);
-		};
-	}, [hideModal]);
-
+const ImageModal = ({ regularImage, info, isOpen, onClose }) => {
 	return (
-		<div className={css.overlay}>
-			<div className={css.imageBox}>
-				<div className={css.descriptionBox}>
-					<p>Description: {info.description}</p>
-					<p>Likes: {info.likes}👍🏼</p>
-				</div>
+		<Modal isOpen={isOpen} ariaHideApp={false} onRequestClose={onClose}>
+			<div className={css.overlay} onClick={onClose}>
+				<div className={css.imageBox}>
+					<div className={css.descriptionBox}>
+						<p className={css.descP}>
+							Description: <span>{info.description}</span>
+						</p>
+						<p className={css.descP}>Likes: {info.likes}👍🏼</p>
+					</div>
 
-				<img className={css.modal} src={regularImage} alt={info.description} />
+					<img
+						className={css.modal}
+						src={regularImage}
+						alt={info.description}
+					/>
+				</div>
 			</div>
-			{/* <Modal
-				isOpen={hideModal}
-				// onAfterOpen={afterOpenModal}
-				// onRequestClose={closeModal}
-				className={css.content}
-			>
-				open modal window
-			</Modal> */}
-		</div>
+		</Modal>
 	);
 };
 
